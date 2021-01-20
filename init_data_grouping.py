@@ -1,7 +1,7 @@
 # flexible aggregation script
-
 import pandas as pd
 import matplotlib.pyplot as plt
+
 
 def read_data(file, ts_datetime):
 
@@ -10,12 +10,10 @@ def read_data(file, ts_datetime):
     # convert to datetime format
     df[ts_datetime] =  pd.to_datetime(df[ts_datetime])
 
-
     print(df.dtypes)
 
     return df
 
-df = read_data('crime.csv', 'REPORTED_DATE')
 
 def create_diff_group_fields(df, ts_datetime):
 
@@ -30,7 +28,6 @@ def create_diff_group_fields(df, ts_datetime):
 
     return df
 
-df = create_diff_group_fields(df, 'REPORTED_DATE')
 
 def aggregate_data(df, granularity, series_field, rec_id):
 
@@ -41,8 +38,6 @@ def aggregate_data(df, granularity, series_field, rec_id):
 
 
     return df_grouped
-
-df_grouped = aggregate_data(df, 'year_week','OFFENSE_CATEGORY_ID', 'OFFENSE_ID')
 
 
 def create_ref_data(df, granularity, series_field):
@@ -73,8 +68,6 @@ def create_ref_data(df, granularity, series_field):
 
     return df_ref
 
-df_ref = create_ref_data(df_grouped, 'year_week', 'OFFENSE_CATEGORY_ID')
-
 
 def viz_something():
     pass
@@ -82,4 +75,17 @@ def viz_something():
 def write_results(df):
     df.to_csv('grouped_data.csv', index=False)
 
-write_results(df_ref)
+
+
+def main():
+
+    df = read_data(file='crime.csv', ts_datetime='REPORTED_DATE')
+    df = create_diff_group_fields(df=df, ts_datetime='REPORTED_DATE')
+    # Options for granularity = [year_week, year, month, date]
+    df_grouped = aggregate_data(df=df, granularity='year_week',series_field='OFFENSE_CATEGORY_ID', rec_id='OFFENSE_ID')
+    df_ref = create_ref_data(df=df_grouped, granularity='year_week', series_field='OFFENSE_CATEGORY_ID')
+    write_results(df=df_ref)
+
+
+if __name__== "__main__" :
+    main()
