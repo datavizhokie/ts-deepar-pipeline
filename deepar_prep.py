@@ -9,15 +9,9 @@ spark = SparkSession.builder.appName('ops').getOrCreate()
 sc=spark.sparkContext
 
 import pyspark.sql.functions as f
-from pyspark.sql.functions import date_format
 from pyspark.sql.types import DoubleType
-from pyspark.sql.functions import lit
-from pyspark.sql.functions import isnan
+from pyspark.sql.functions import lit, isnan
 from pyspark.sql import Window
-from pyspark.sql.functions import rank, col
-from pyspark.ml.feature import StringIndexer
-from pyspark.sql.functions import substring
-from pyspark.sql.functions import trim
 #import boto3
 
 
