@@ -26,8 +26,16 @@ The maximum Context Length equals:
 
 After a few iterations of hyperparameter tuning jobs, the results are not as good as expected. Things to consider that affect model performance:
 
+
+### Data Considerations
 * Immediate drop in crime as a result of Denver Covid shutdown in March
 * Civil unrest and rioting in late March and early June
 * Lower crime overall due to Covid lockdowns across 2020
 
-![viz](Screen%Shot%2021-01-21%at%3.58.17%PM.png)
+### Further Modeling Considerations
+* Add categorical features for each series (i.e. creating broader group for grouping similar categories such as "auto-theft" and "theft-from-motor-vehicle"
+* Add dynamic features (i.e. binary indicators for scheduled political events and holidays)
+
+### Visualization of modeling results for each Crime Category series that was forecasted
+
+![viz](https://github.com/datavizhokie/ts-deepar-pipeline/blob/master/Screen%20Shot%202021-01-21%20at%203.58.17%20PM.png)
