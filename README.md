@@ -21,3 +21,13 @@ The data starts in January 2016 and goes through early January 2021. In order to
 The maximum Context Length equals:
 
 (Training Set length) - (Prediction Period) =  209-52 = 157
+
+## Modeling results
+
+After a few iterations of hyperparameter tuning jobs, the results are not as good as expected. Things to consider that affect model performance:
+
+* Immediate drop in crime as a result of Denver Covid shutdown in March
+* Civil unrest and rioting in late March and early June
+* Lower crime overall due to Covid lockdowns across 2020
+
+![viz](Screen%Shot%2021-01-21%at%3.58.17%PM.png)
