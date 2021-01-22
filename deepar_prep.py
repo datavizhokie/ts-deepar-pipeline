@@ -99,12 +99,10 @@ def write_final_to_json(train, test, pathkey, access_key, secret_key, sc):
     sc._jsc.hadoopConfiguration().set("fs.s3a.secret.key", secret_key)
 
     try:
-        train.coalesce(1).write.mode('overwrite').json(f'{pathkey}/train/')
-        test.coalesce(1).write.mode('overwrite').json(f'{pathkey}/test/')
-
-        # test_final.coalesce(1).write.mode('overwrite').json('s3a://den-crime/training_data/test')
-        # train_final.coalesce(1).write.mode('overwrite').json('s3a://den-crime/training_data/train')
+        test.coalesce(1).write.mode('overwrite').json('s3a://den-crime/training_data/test')
+        train.coalesce(1).write.mode('overwrite').json('s3a://den-crime/training_data/train')
         print("Write to json succeeded.")
+        
     except:
         print("Write to json failed.")
 
