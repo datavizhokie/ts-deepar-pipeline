@@ -6,13 +6,26 @@ os.environ['PYSPARK_SUBMIT_ARGS'] = '--packages com.amazonaws:aws-java-sdk-pom:1
 from pyspark.sql import SparkSession
 from pyspark import SparkContext, SparkConf
 spark = SparkSession.builder.appName('ops').getOrCreate()
-sc=spark.sparkContext
+
+sc = spark.sparkContext
 
 import pyspark.sql.functions as f
 from pyspark.sql.types import DoubleType
 from pyspark.sql.functions import lit, isnan
 from pyspark.sql import Window
 #import boto3
+
+def retrieve_aws_creds():
+
+    try:
+        access_key = os.getenv('ACCESSKEY')
+        secret_key = os.getenv('SECRETKEY')
+        
+    except:
+        print("aws creds unable to load...")
+        exit()
+
+    return access_key, secret_key
 
 
 def read_create_mindate(file, series_field, granularity):
@@ -80,21 +93,29 @@ def create_array_formats(train_data, test_data, series_field, granularity):
     return sorted_list_train, sorted_list_test
 
 
-def write_final_to_json(train, test, pathkey):
-    #TODO: write to S3
+def write_final_to_json(train, test, pathkey, access_key, secret_key, sc):
+    #TODO: debug why S3 write works in Jupyter but not here
+    sc._jsc.hadoopConfiguration().set("fs.s3a.access.key", access_key)
+    sc._jsc.hadoopConfiguration().set("fs.s3a.secret.key", secret_key)
+
     try:
         train.coalesce(1).write.mode('overwrite').json(f'{pathkey}/train/')
         test.coalesce(1).write.mode('overwrite').json(f'{pathkey}/test/')
+
+        # test_final.coalesce(1).write.mode('overwrite').json('s3a://den-crime/training_data/test')
+        # train_final.coalesce(1).write.mode('overwrite').json('s3a://den-crime/training_data/train')
         print("Write to json succeeded.")
     except:
         print("Write to json failed.")
 
 def main():
 
+    access_key, secret_key = retrieve_aws_creds()
+
     df_joined = read_create_mindate(file='grouped_data.csv', series_field='OFFENSE_CATEGORY_ID', granularity='year_week')
     train_data, test_data = train_split(df=df_joined, max_train_date="2020-01", series_field='OFFENSE_CATEGORY_ID', granularity='year_week')
     sorted_list_train, sorted_list_test = create_array_formats(train_data=train_data, test_data=test_data, series_field='OFFENSE_CATEGORY_ID', granularity='year_week')
-    write_final_to_json(train=sorted_list_train, test=sorted_list_test, pathkey='training_input')
+    write_final_to_json(train=sorted_list_train, test=sorted_list_test, pathkey='training_input', access_key=access_key, secret_key=secret_key, sc=sc)
 
 if __name__ == "__main__":
     main()
