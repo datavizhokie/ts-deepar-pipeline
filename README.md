@@ -36,6 +36,6 @@ After a few iterations of hyperparameter tuning jobs, the results are not as goo
 * Add categorical features for each series (i.e. creating broader group for grouping similar categories such as "auto-theft" and "theft-from-motor-vehicle"
 * Add dynamic features (i.e. binary indicators for scheduled political events and holidays)
 
-### Visualization of modeling results for each Crime Category series that was forecasted
+### Visualization of modeling results for each Crime Category forecasted
 
-![viz](https://github.com/datavizhokie/ts-deepar-pipeline/blob/master/Screen%20Shot%202021-01-21%20at%203.58.17%20PM.png)
+![viz](https://github.com/datavizhokie/ts-deepar-pipeline/blob/master/deepar_results_viz.png)
