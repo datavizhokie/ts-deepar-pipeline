@@ -29,7 +29,7 @@ After a few iterations of hyperparameter tuning jobs, the results are not as goo
 
 ### Data Considerations
 * Immediate drop in crime as a result of Denver Covid shutdown in March
-* Civil unrest and rioting in late March and early June
+* Civil unrest and rioting in late May/early June
 * Lower crime overall due to Covid lockdowns across 2020
 
 ### Further Modeling Considerations
