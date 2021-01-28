@@ -59,13 +59,13 @@ def train_split(df, max_train_date, series_field, granularity):
     return train_data, test_data
 
 
-def create_array_formats(train_data, test_data, series_field, granularity):
+def create_array_formats(bucket, train_data, test_data, series_field, granularity):
 
-    w = Window.partitionBy('OFFENSE_CATEGORY_ID').orderBy('year_week')
+    w = Window.partitionBy(series_field).orderBy(granularity)
 
     sorted_list_train = train_data.withColumn('target', f.collect_list('target').over(w)
                                         )\
-    .groupBy('OFFENSE_CATEGORY_ID')\
+    .groupBy(series_field)\
     .agg(f.max('target').alias('target'), 
         f.min('mindate').alias('start'), 
     #      f.max('month_list').alias('dynamic_feat1'),
@@ -74,7 +74,7 @@ def create_array_formats(train_data, test_data, series_field, granularity):
 
     sorted_list_test = test_data.withColumn('target', f.collect_list('target').over(w)
                                         )\
-    .groupBy('OFFENSE_CATEGORY_ID')\
+    .groupBy(series_field)\
     .agg(f.max('target').alias('target'), 
         f.min('mindate').alias('start'), 
     #      f.max('month_list').alias('dynamic_feat1'),
@@ -84,23 +84,23 @@ def create_array_formats(train_data, test_data, series_field, granularity):
     print("Preview of DF with Target arrays by Series:")
     sorted_list_train.show(5)
 
-    #TODO: add logic for Cat's and DynFeat's
-    # train_final = sorted_list_train.select("OFFENSE_CATEGORY_ID","start","target").persist()
-                                       #f.array(["cat2"]).alias("cat"),
-                                                    #f.array(["dynamic_feat1","dynamic_feat2"]).alias("dynamic_feat")).persist()
+    #TODO: add logic for Cat's and DynFeat's if the exist!
+    # train_final = sorted_list_train.select(series_field,"start","target")
+    #       f.array(["cat2"]).alias("cat"),
+    #       f.array(["dynamic_feat1","dynamic_feat2"]).alias("dynamic_feat")).persist()
     # test_final = ...
 
     return sorted_list_train, sorted_list_test
 
 
 def write_final_to_json(train, test, pathkey, access_key, secret_key, sc):
-    #TODO: debug why S3 write works in Jupyter but not here
+    # feed hadoop some aws creds!
     sc._jsc.hadoopConfiguration().set("fs.s3a.access.key", access_key)
     sc._jsc.hadoopConfiguration().set("fs.s3a.secret.key", secret_key)
 
     try:
-        test.coalesce(1).write.mode('overwrite').json('s3a://den-crime/training_data/test')
-        train.coalesce(1).write.mode('overwrite').json('s3a://den-crime/training_data/train')
+        test.coalesce(1).write.mode('overwrite').json(f's3a://{bucket}/training_data/test')
+        train.coalesce(1).write.mode('overwrite').json(f's3a://{bucket}/training_data/train')
         print("Write to json succeeded.")
         
     except:
@@ -112,7 +112,7 @@ def main():
 
     df_joined = read_create_mindate(file='grouped_data.csv', series_field='OFFENSE_CATEGORY_ID', granularity='year_week')
     train_data, test_data = train_split(df=df_joined, max_train_date="2020-01", series_field='OFFENSE_CATEGORY_ID', granularity='year_week')
-    sorted_list_train, sorted_list_test = create_array_formats(train_data=train_data, test_data=test_data, series_field='OFFENSE_CATEGORY_ID', granularity='year_week')
+    sorted_list_train, sorted_list_test = create_array_formats(bucket='den-crime', train_data=train_data, test_data=test_data, series_field='OFFENSE_CATEGORY_ID', granularity='year_week')
     write_final_to_json(train=sorted_list_train, test=sorted_list_test, pathkey='training_input', access_key=access_key, secret_key=secret_key, sc=sc)
 
 if __name__ == "__main__":
