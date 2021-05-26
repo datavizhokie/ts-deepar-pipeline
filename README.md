@@ -11,7 +11,7 @@ Flexible pipeline for modeling time series data with DeepAR, calling predictions
 Crime data is quite stochastic, however seasonal patterns prevail. As such, predicting at the daily level would not be very effective, so predicting at the weekly level is a more tractable problem. 
 
 ### An interesting correlation between two Categories, given the global pandemic of 2020:
-![viz](https://github.com/datavizhokie/ts-deepar-pipeline/blob/master/Den%20Traffic%20Accidents%20%26%20Auto%20Thefts.png)
+<img src="https://github.com/datavizhokie/ts-deepar-pipeline/blob/master/Den%20Traffic%20Accidents%20%26%20Auto%20Thefts.png" width=50% height=50%>
 
 
 ## Training and Test Data
@@ -38,4 +38,4 @@ After a few iterations of hyperparameter tuning jobs, the results are not as goo
 
 ### Visualization of modeling results for each Crime Category forecasted
 
-![viz](https://github.com/datavizhokie/ts-deepar-pipeline/blob/master/deepar_results_viz.png)
+<img src="https://github.com/datavizhokie/ts-deepar-pipeline/blob/master/deepar_results_viz" width=75% height=75%>
