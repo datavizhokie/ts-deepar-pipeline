@@ -11,7 +11,8 @@ Crime data is quite stochastic, however seasonal patterns prevail. As such, pred
 
 ### An interesting correlation between two Categories, given the global pandemic of 2020:
 As less cars are on the roads, more are stolen or looted.
-<img src="https://github.com/datavizhokie/ts-deepar-pipeline/blob/master/Den%20Traffic%20Accidents%20%26%20Auto%20Thefts.png" width=50% height=50%>
+
+<img src="https://github.com/datavizhokie/ts-deepar-pipeline/blob/master/Den%20Traffic%20Accidents%20%26%20Auto%20Thefts.png" width=40% height=40%>
 
 
 ## Training and Test Data
@@ -35,4 +36,4 @@ After a few iterations of hyperparameter tuning jobs, the results are not as goo
 
 ### Visualization of modeling results for each Crime Category forecasted
 
-<img src="https://github.com/datavizhokie/ts-deepar-pipeline/blob/master/deepar_results_viz.png" width=75% height=75%>
+<img src="https://github.com/datavizhokie/ts-deepar-pipeline/blob/master/deepar_results_viz.png" width=60% height=60%>
