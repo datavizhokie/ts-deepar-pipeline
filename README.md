@@ -38,4 +38,4 @@ After a few iterations of hyperparameter tuning jobs, the results are not as goo
 
 ### Visualization of modeling results for each Crime Category forecasted
 
-<img src="https://github.com/datavizhokie/ts-deepar-pipeline/blob/master/deepar_results_viz" width=75% height=75%>
+<img src="https://github.com/datavizhokie/ts-deepar-pipeline/blob/master/deepar_results_viz.png" width=75% height=75%>
